@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.storyapp.fragment.home.HomeFragment"
+        android:label="@string/story_page"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_authenticationFragment"
+            app:destination="@id/authenticationFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/authenticationFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_homeFragment_to_addStoryFragment"
+            app:destination="@id/addStoryFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/addStoryFragment"
+        android:name="com.storyapp.fragment.add.AddStoryFragment"
+        android:label="@string/new_story_page"
+        tools:layout="@layout/fragment_add_story" />
+    <fragment
+        android:id="@+id/authenticationFragment"
+        android:name="com.storyapp.fragment.authentication.AuthenticationFragment"
+        android:label="@string/auth_page"
+        tools:layout="@layout/fragment_authentication" >
+        <action
+            android:id="@+id/action_authenticationFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
+    </fragment>
+</navigation>
