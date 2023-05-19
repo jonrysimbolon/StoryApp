@@ -18,6 +18,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "BASE_URL", '"https://story-api.dicoding.dev/"')
         buildConfigField("String", "PREFERENCES", '"local_data"')
         buildConfigField("String", "USERID", '"userid"')
         buildConfigField("String", "NAME", '"name"')
@@ -46,7 +47,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -83,7 +84,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6"
 
     def koinVersion = "3.2.0"
-    implementation "io.insert-koin:koin-android:${koinVersion}"
+    implementation 'io.insert-koin:koin-android:3.3.2'
     implementation "io.insert-koin:koin-androidx-navigation:${koinVersion}"
     implementation "io.insert-koin:koin-androidx-compose:${koinVersion}"
 }

@@ -27,12 +27,22 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_homeFragment_to_detailStoryFragment"
+            app:destination="@id/detailStoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/addStoryFragment"
         android:name="com.storyapp.fragment.add.AddStoryFragment"
         android:label="@string/new_story_page"
-        tools:layout="@layout/fragment_add_story" />
+        tools:layout="@layout/fragment_add_story" >
+        <action
+            android:id="@+id/action_addStoryFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_addStoryFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
     <fragment
         android:id="@+id/authenticationFragment"
         android:name="com.storyapp.fragment.authentication.AuthenticationFragment"
@@ -48,5 +58,33 @@
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true"
             app:launchSingleTop="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailStoryFragment"
+        android:name="com.storyapp.fragment.detail.DetailStoryFragment"
+        android:label="@string/det_story_page"
+        tools:layout="@layout/fragment_detail_story" >
+
+        <argument
+            android:name="imageStory"
+            app:argType="string" />
+        <argument
+            android:name="dateStory"
+            app:argType="string" />
+        <argument
+            android:name="nameStory"
+            app:argType="string" />
+        <argument
+            android:name="descStory"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.storyapp.fragment.camera.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera" >
+        <action
+            android:id="@+id/action_cameraFragment_to_addStoryFragment"
+            app:destination="@id/addStoryFragment" />
     </fragment>
 </navigation>

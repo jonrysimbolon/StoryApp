@@ -14,13 +14,13 @@ import com.storyapp.remote.response.ResultStatus
 import com.storyapp.utils.doAnimation
 import com.storyapp.utils.isValidLogin
 import com.storyapp.utils.showSnackBarAppearBriefly
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class LoginFragment : Fragment() {
 
     private val binding by lazy { FragmentLoginBinding.inflate(layoutInflater) }
-    private val loginViewModel: LoginViewModel by sharedViewModel()
-    private val mainViewModel: MainViewModel by sharedViewModel()
+    private val loginViewModel: LoginViewModel by activityViewModel()
+    private val mainViewModel: MainViewModel by activityViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

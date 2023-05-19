@@ -13,7 +13,6 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-
     </style>
 
     <style name="Theme.StoryApp" parent="Base.Theme.StoryApp" />

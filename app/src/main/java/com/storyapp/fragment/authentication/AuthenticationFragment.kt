@@ -11,12 +11,12 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.storyapp.R
 import com.storyapp.adapter.SectionsPagerAdapter
 import com.storyapp.databinding.FragmentAuthenticationBinding
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class AuthenticationFragment : Fragment() {
 
     private val binding by lazy { FragmentAuthenticationBinding.inflate(layoutInflater) }
-    private val authViewModel: AuthenticationViewModel by sharedViewModel()
+    private val authViewModel: AuthenticationViewModel by activityViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -10,21 +10,30 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.MenuProvider
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.storyapp.R
+import com.storyapp.adapter.StoryAdapter
 import com.storyapp.databinding.FragmentHomeBinding
 import com.storyapp.main.MainViewModel
+import com.storyapp.model.StoryModel
 import com.storyapp.remote.response.ResultStatus
 import com.storyapp.remote.response.Story
+import com.storyapp.utils.StoryFailureDialog
+import com.storyapp.utils.convertStoryToStoryModel
 import com.storyapp.utils.showSnackBarAppearBriefly
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class HomeFragment : Fragment() {
 
-    private val homeViewModel: HomeViewModel by sharedViewModel()
-    private val mainViewModel: MainViewModel by sharedViewModel()
+    private val storyAdapter: StoryAdapter by inject()
+    private val homeViewModel: HomeViewModel by activityViewModel()
+    private val mainViewModel: MainViewModel by activityViewModel()
+    private val failureDialog by lazy { StoryFailureDialog(requireActivity()) }
     private val binding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
 
     override fun onCreateView(
@@ -37,28 +46,43 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mainViewModel.isLogin().observe(viewLifecycleOwner) { isLogin ->
-            binding.homeLayout.visibility = if (isLogin) View.VISIBLE else View.GONE
-        }
-
         binding.apply {
+
+            val layoutManager = LinearLayoutManager(requireActivity())
+            rvStory.layoutManager = layoutManager
+
             menuOverlay()
 
-            homeViewModel.getUser().observe(viewLifecycleOwner){ userModel ->
-                home2Id.text = userModel.toString()
+            srlMain.setOnRefreshListener {
+                observeStories()
             }
 
-            homeViewModel.fetchStories().observe(viewLifecycleOwner){ result ->
+            observeStories()
+
+            homeViewModel.failure.observe(viewLifecycleOwner) { errorDialogModel ->
+                failureDialog.show(errorDialogModel.show)
+                failureDialog.setDescription(errorDialogModel.description)
+                failureDialog.setOnClick {
+                    observeStories()
+                }
+            }
+        }
+    }
+
+    private fun observeStories() {
+        binding.apply {
+            homeViewModel.fetchStories().observe(viewLifecycleOwner) { result ->
                 when (result) {
-                    ResultStatus.Loading -> mainViewModel.showLoading(true)
+                    ResultStatus.Loading -> {
+                        loadingState()
+                    }
 
                     is ResultStatus.Error -> {
-                        mainViewModel.showLoading(false)
-                        result.error.showSnackBarAppearBriefly(root)
+                        errorState(result.error)
                     }
 
                     is ResultStatus.Success -> {
-                        mainViewModel.showLoading(false)
+                        successState()
                         result.data.message.showSnackBarAppearBriefly(root)
                         whatNext(result.data.listStory)
                     }
@@ -67,8 +91,59 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun whatNext(listStory: List<Story>) {
+    private fun loadingState() {
+        mainViewModel.showLoading(true)
+        showErrorImg(false)
+    }
 
+    private fun errorState(error: String) {
+        stopLoading()
+        showErrorImg(true, error)
+    }
+
+    private fun successState() {
+        stopLoading()
+        showErrorImg(false)
+    }
+
+    private fun showErrorImg(show: Boolean, desc: String = "") {
+        homeViewModel.showFailureImage(show, desc)
+    }
+
+    private fun stopLoading() {
+        binding.apply {
+            if (srlMain.isRefreshing) {
+                srlMain.isRefreshing = false
+            }
+        }
+        mainViewModel.showLoading(false)
+    }
+
+    private fun whatNext(listStory: List<Story>) {
+        val storyData = ArrayList<StoryModel>()
+        for (story in listStory) {
+            storyData.add(
+                convertStoryToStoryModel(story)
+            )
+        }
+        storyAdapter.setListStories(storyData)
+        storyAdapter.onClickItem = ::onClickItem
+        binding.rvStory.adapter = storyAdapter
+    }
+
+    private fun onClickItem(viewHolder: StoryAdapter.ViewHolder, storyModel: StoryModel) {
+        val toDetailStoryFragment = HomeFragmentDirections.actionHomeFragmentToDetailStoryFragment(
+            storyModel.photoUrl,
+            storyModel.createdAt,
+            storyModel.name,
+            storyModel.description
+        )
+        viewHolder
+            .itemView
+            .findNavController()
+            .navigate(
+                toDetailStoryFragment
+            )
     }
 
     private fun menuOverlay() {
@@ -80,7 +155,7 @@ class HomeFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.addNews -> {
-                        getString(R.string.add_news).showSnackBarAppearBriefly(binding.root)
+                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddStoryFragment())
                         false
                     }
 
@@ -88,7 +163,8 @@ class HomeFragment : Fragment() {
                         startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
                         true
                     }
-                    R.id.logout ->{
+
+                    R.id.logout -> {
                         homeViewModel.logout()
                         getString(R.string.success_logout).showSnackBarAppearBriefly(binding.root)
                         true

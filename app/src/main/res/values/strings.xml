@@ -6,6 +6,7 @@
     <string name="new_story_page">New Story</string>
     <string name="settings_page">Settings</string>
     <string name="auth_page">Authentication</string>
+    <string name="desc_failed">Failed cause something.</string>
     <string name="desc_tab">Tab layout for login and registration page</string>
     <string name="hint_name">Name</string>
     <string name="hint_password">Password</string>
@@ -20,4 +21,16 @@
     <string name="loading">Loading</string>
     <string name="story_name">Story name</string>
     <string name="story_desc">Story description</string>
+    <string name="reload">Reload</string>
+    <string name="det_story_page">Detail Story</string>
+    <string name="desc_add">Description</string>
+    <string name="add_photo">Add photo</string>
+    <string name="file_null">File is null</string>
+    <string name="invalid_desc_add_photo">Description is invalid</string>
+    <string name="take_photo">Take a Photo</string>
+    <string name="choose_gallery">Choose from Gallery</string>
+    <string name="select_option">Select Option</string>
+    <string name="cancel">Cancel</string>
+    <string name="choose_picture">Choose a Picture</string>
+    <string name="not_get_permission">not getting permissions</string>
 </resources>

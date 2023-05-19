@@ -14,14 +14,14 @@ import com.storyapp.remote.response.ResultStatus
 import com.storyapp.utils.doAnimation
 import com.storyapp.utils.isValidRegistration
 import com.storyapp.utils.showSnackBarAppearBriefly
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class RegistrationFragment : Fragment() {
 
     private val binding by lazy { FragmentRegistrationBinding.inflate(layoutInflater) }
-    private val registrationViewModel: RegistrationViewModel by sharedViewModel()
-    private val authViewModel: AuthenticationViewModel by sharedViewModel()
-    private val mainViewModel: MainViewModel by sharedViewModel()
+    private val registrationViewModel: RegistrationViewModel by activityViewModel()
+    private val authViewModel: AuthenticationViewModel by activityViewModel()
+    private val mainViewModel: MainViewModel by activityViewModel()
 
 
     override fun onCreateView(
