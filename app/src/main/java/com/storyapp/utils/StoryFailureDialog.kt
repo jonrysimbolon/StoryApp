@@ -44,9 +44,9 @@ class StoryFailureDialog(
     }
 
     fun show(show: Boolean) {
-        if(show) {
+        if (show) {
             dialog.show()
-        }else{
+        } else {
             dialog.dismiss()
         }
     }

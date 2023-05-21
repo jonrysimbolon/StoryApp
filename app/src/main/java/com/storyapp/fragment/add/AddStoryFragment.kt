@@ -4,9 +4,11 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,22 +17,28 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.storyapp.R
 import com.storyapp.databinding.FragmentAddStoryBinding
 import com.storyapp.main.MainViewModel
 import com.storyapp.remote.response.ResultStatus
+import com.storyapp.utils.PREFIX_FILE
+import com.storyapp.utils.SUFFIX_FILE
+import com.storyapp.utils.dateFormatFromServer
+import com.storyapp.utils.descImage
 import com.storyapp.utils.isValidAddPhoto
-import com.storyapp.utils.reduceFileImage
 import com.storyapp.utils.showSnackBarAppearBriefly
-import com.storyapp.utils.uriToFile
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class AddStoryFragment : Fragment() {
 
@@ -46,15 +54,30 @@ class AddStoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         permissionAddPhoto()
         binding.apply {
+            addStoryViewModel.buttonState.observe(viewLifecycleOwner) { enable ->
+                buttonAddPhoto.isEnabled = enable
+                if (enable) {
+                    buttonAddPhoto.text = getString(R.string.add_photo)
+                    buttonAddPhoto.setBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.red_500
+                        )
+                    )
+                } else {
+                    buttonAddPhoto.text = getString(R.string.please_wait)
+                    buttonAddPhoto.setBackgroundColor(Color.GRAY)
+                }
+            }
+
             ivAddPhoto.setOnClickListener {
                 showPopup()
             }
 
             buttonAddPhoto.setOnClickListener {
-                if (isValidAddPhoto(
+                if (!isValidAddPhoto(
                         fileAddPhoto,
                         edAddDescription,
                         { error ->
@@ -64,34 +87,46 @@ class AddStoryFragment : Fragment() {
                                 )
                             }
                         },
-                        { getString(R.string.invalid_desc_add_photo) }
+                        getString(R.string.empty_desc)
                     )
                 ) {
+                    return@setOnClickListener
+                }
 
-                    val file = reduceFileImage(fileAddPhoto as File)
-                    val description = edAddDescription.text.toString().toRequestBody(TEXT_PLAIN_TYPE.toMediaType())
-                    val requestImageFile = file.asRequestBody(REQUEST_TYPE_IMAGE.toMediaType())
-                    val imageMultipart = MultipartBody.Part.createFormData(
-                        PHOTO,
-                        file.name,
-                        requestImageFile
-                    )
-                    addStoryViewModel.addStory(
-                        imageMultipart,
-                        description
-                    ).observe(viewLifecycleOwner) { result ->
-                        when (result) {
-                            ResultStatus.Loading -> mainViewModel.showLoading(true)
+                addStoryViewModel.enableButton(false)
+                val multipartBody = lifecycleScope.async {
+                    try {
+                        addStoryViewModel.processSelectedImage(fileAddPhoto)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        null
+                    }
+                }
 
-                            is ResultStatus.Error -> {
-                                mainViewModel.showLoading(false)
-                                result.error.showSnackBarAppearBriefly(root)
-                            }
+                lifecycleScope.launch(Dispatchers.Main) {
+                    if (multipartBody.await() != null) {
+                        addStoryViewModel.addStory(
+                            multipartBody.await() ?: return@launch,
+                            descImage(edAddDescription.text.toString())
+                        ).observe(viewLifecycleOwner) { result ->
+                            when (result) {
+                                ResultStatus.Loading -> {
+                                    mainViewModel.showLoading(true)
+                                    addStoryViewModel.enableButton(false)
+                                }
 
-                            is ResultStatus.Success -> {
-                                mainViewModel.showLoading(false)
-                                result.data.message.showSnackBarAppearBriefly(root)
-                                whatNext(result.data.message)
+                                is ResultStatus.Error -> {
+                                    addStoryViewModel.enableButton(true)
+                                    mainViewModel.showLoading(false)
+                                    result.error.showSnackBarAppearBriefly(root)
+                                }
+
+                                is ResultStatus.Success -> {
+                                    addStoryViewModel.enableButton(true)
+                                    mainViewModel.showLoading(false)
+                                    result.data.message.showSnackBarAppearBriefly(root)
+                                    whatNext(result.data.message)
+                                }
                             }
                         }
                     }
@@ -127,19 +162,13 @@ class AddStoryFragment : Fragment() {
             .show()
     }
 
-    private val launcherIntentCameraX = registerForActivityResult(
+    private lateinit var currentPhotoPath: String
+    private val launcherIntentCamera = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
-    ){
-        if(it.resultCode == CAMERA_X_RESULT){
-            val myFile = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-                it.data?.getSerializableExtra(PICTURE, File::class.java)
-            }else{
-                @Suppress("DEPRECATION")
-                it.data?.getSerializableExtra(PICTURE)
-            } as? File
-            // val isBackCamera = it.data?.getBooleanExtra("isBackCamera", true) as Boolean
-            myFile?.let { file ->
-                // rotateFile(file, isBackCamera) // gk ngerti apa maksudnya, soalnya di hp saya jadi mutar kalo pake ini
+    ) {
+        if (it.resultCode == AppCompatActivity.RESULT_OK) {
+            val myFile = File(currentPhotoPath)
+            myFile.let { file ->
                 fileAddPhoto = file
                 binding.ivAddPhoto.setImageBitmap(BitmapFactory.decodeFile(file.path))
             }
@@ -148,11 +177,11 @@ class AddStoryFragment : Fragment() {
 
     private val launcherIntentGallery = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
-    ){
-        if(it.resultCode == AppCompatActivity.RESULT_OK){
+    ) {
+        if (it.resultCode == AppCompatActivity.RESULT_OK) {
             val selectedImg = it.data?.data as Uri
             selectedImg.let { uri ->
-                val myFile = uriToFile(uri, requireActivity())
+                val myFile = addStoryViewModel.uriToFile(uri, requireActivity())
                 fileAddPhoto = myFile
                 binding.ivAddPhoto.setImageURI(uri)
             }
@@ -171,8 +200,30 @@ class AddStoryFragment : Fragment() {
     }
 
     private fun camera() {
+        val photoFile = File.createTempFile(
+            "$PREFIX_FILE${
+                SimpleDateFormat(
+                    dateFormatFromServer,
+                    Locale.getDefault()
+                ).format(Date())
+            }",
+            SUFFIX_FILE,
+            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        )
+        val photoUri = FileProvider.getUriForFile(
+            requireActivity(),
+            requireActivity().packageName,
+            photoFile
+        )
+        currentPhotoPath = photoFile.absolutePath
 
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+            putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+        }
+
+        launcherIntentCamera.launch(cameraIntent)
     }
+
     private fun requestCameraPermission() {
         val cameraPermission = Manifest.permission.CAMERA
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
@@ -201,15 +252,10 @@ class AddStoryFragment : Fragment() {
     }
 
     companion object {
-        private const val CAMERA_X_RESULT = 200
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         private const val REQUEST_IMAGE_CAPTURE = 0
         private const val REQUEST_IMAGE_PICK = 1
         private const val TYPE_IMAGE = "image/*"
-        private const val REQUEST_TYPE_IMAGE = "image/jpeg"
-        private const val TEXT_PLAIN_TYPE = "text/plain"
-        private const val PHOTO = "photo"
-        private const val PICTURE = "picture"
     }
 
 }

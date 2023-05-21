@@ -6,7 +6,7 @@ import com.storyapp.model.StoryModel
 class StoryDiffCallback(
     private val mOldStoryList: List<StoryModel>,
     private val mNewStoryList: List<StoryModel>
-): DiffUtil.Callback() {
+) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = mOldStoryList.size
 
     override fun getNewListSize(): Int = mNewStoryList.size

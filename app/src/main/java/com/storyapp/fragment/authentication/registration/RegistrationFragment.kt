@@ -50,7 +50,7 @@ class RegistrationFragment : Fragment() {
                         nameBox = edRegisterName,
                         emailBox = edRegisterEmail,
                         passBox = edRegisterPassword,
-                        errorName = { getString(R.string.error_email) },
+                        errorName = { getString(R.string.error_name) },
                         errorEmail = { getString(R.string.error_email) },
                         errorPass = { getString(R.string.error_password) }
                     )

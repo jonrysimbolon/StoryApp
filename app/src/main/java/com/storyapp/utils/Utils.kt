@@ -2,37 +2,31 @@ package com.storyapp.utils
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.content.ContentResolver
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
-import com.storyapp.R
 import com.storyapp.model.StoryModel
 import com.storyapp.remote.response.Response
 import com.storyapp.remote.response.Story
-import java.io.ByteArrayOutputStream
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-const val MAXIMAL_SIZE = 1000000
 const val dateFormatFromServer = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+const val PREFIX_FILE = "temp_"
+const val SUFFIX_FILE = ".jpg"
+const val TEXT_PLAIN_TYPE = "text/plain"
+
 fun dateFormat(dateStr: String): String {
     val inputFormat = SimpleDateFormat(dateFormatFromServer, Locale.getDefault())
 
@@ -103,65 +97,25 @@ fun doAnimation(imageView: ImageView, btn: Button, vararg view: View) {
     }
 }
 
-fun reduceFileImage(file: File): File {
-    val bitmap = BitmapFactory.decodeFile(file.path)
-    var compressQuality = 100
-    var streamLength: Int
-
-    val bmpStream = ByteArrayOutputStream()
-    bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
-    var bmpPicByteArray = bmpStream.toByteArray()
-    streamLength = bmpPicByteArray.size
-
-    while (streamLength > MAXIMAL_SIZE && compressQuality > 0) {
-        compressQuality -= 5
-        bmpStream.reset()
-
-        bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
-        bmpPicByteArray = bmpStream.toByteArray()
-        streamLength = bmpPicByteArray.size
-    }
-
-    FileOutputStream(file).use { outputStream ->
-        outputStream.write(bmpPicByteArray)
-    }
-
-    return file
-}
-
-fun uriToFile(selectedImg: Uri, context: Context): File {
-    val contentResolver = context.contentResolver
-    val myFile = File.createTempFile("temp_", ".jpg", context.cacheDir)
-
-    contentResolver.openInputStream(selectedImg)?.use { input ->
-        FileOutputStream(myFile).use { output ->
-            val buf = ByteArray(1024)
-            var len: Int
-            while (input.read(buf).also { len = it } > 0) {
-                output.write(buf, 0, len)
-            }
-        }
-    }
-
-    return myFile
-}
-
+fun descImage(desc: String): RequestBody = desc.toRequestBody(TEXT_PLAIN_TYPE.toMediaType())
 
 fun isValidAddPhoto(
     file: File?,
     tie_Desc: TextInputEditText,
     errorFile: (Boolean) -> Unit,
-    errorDesc: () -> String
-): Boolean{
-    return when{
+    ifEmptyDesc: String,
+): Boolean {
+    return when {
         file == null -> {
             errorFile(true)
             false
         }
+
         tie_Desc.text == null || tie_Desc.text?.isEmpty() == true -> {
-            tie_Desc.error = errorDesc()
+            tie_Desc.setText(ifEmptyDesc)
             false
         }
+
         else -> true
     }
 }

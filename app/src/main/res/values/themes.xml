@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.StoryApp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Customize your light theme here. -->
@@ -16,9 +16,14 @@
     </style>
 
     <style name="Theme.StoryApp" parent="Base.Theme.StoryApp" />
+
     <style name="OutlineBoxStyle">
         <item name="android:background">@drawable/edit_text_outline_bg</item>
         <item name="android:padding">20dp</item>
     </style>
 
+    <style name="ThemeOverlay.StoryApp.AppWidgetContainer" parent="">
+        <item name="appWidgetBackgroundColor">@color/red_700</item>
+        <item name="appWidgetTextColor">@color/white</item>
+    </style>
 </resources>

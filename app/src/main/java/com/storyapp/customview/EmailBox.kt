@@ -8,7 +8,8 @@ import android.util.Patterns
 import androidx.appcompat.widget.AppCompatEditText
 import com.storyapp.R
 
-class EmailBox(context: Context, attrs: AttributeSet) : AppCompatEditText(context, attrs), TextWatcher {
+class EmailBox(context: Context, attrs: AttributeSet) : AppCompatEditText(context, attrs),
+    TextWatcher {
 
     init {
         addTextChangedListener(this)

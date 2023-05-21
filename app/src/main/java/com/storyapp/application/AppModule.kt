@@ -1,6 +1,7 @@
 package com.storyapp.application
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -18,6 +19,10 @@ import com.storyapp.fragment.home.HomeViewModel
 import com.storyapp.main.MainViewModel
 import com.storyapp.model.UserPreferences
 import com.storyapp.remote.ApiService
+import com.storyapp.utils.BitmapLoader
+import com.storyapp.utils.ImageUtils
+import com.storyapp.widget.StackRemoteViewsFactory
+import com.storyapp.widget.StackWidgetViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -53,8 +58,13 @@ val appModule = module {
     single { androidContext().dataStore }
     single { UserPreferences(get()) }
     single { Gson() }
-    single { Glide.with(androidContext()).setDefaultRequestOptions(RequestOptions()) }
+    single { RequestOptions() }
+    single { Glide.with(androidContext()).setDefaultRequestOptions(get()) }
     factory { StoryAdapter(get()) }
+    single { ImageUtils() }
+    single { BitmapFactory.Options() }
+    single { BitmapLoader(get()) }
+    factory { StackRemoteViewsFactory(get(), get(), get()) }
 }
 
 val viewModelModule = module {
@@ -63,6 +73,7 @@ val viewModelModule = module {
     viewModel { LoginViewModel(get(), get(), get()) }
     viewModel { RegistrationViewModel(get(), get()) }
     viewModel { HomeViewModel(get(), get(), get()) }
-    viewModel { AddStoryViewModel(get(), get(), get()) }
-    viewModel { DetailStoryViewModel(get(), get(), get(), get()) }
+    viewModel { AddStoryViewModel(get(), get(), get(), get()) }
+    viewModel { DetailStoryViewModel(get()) }
+    viewModel { StackWidgetViewModel(get(), get()) }
 }

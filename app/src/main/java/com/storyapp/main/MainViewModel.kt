@@ -8,12 +8,12 @@ import com.storyapp.model.UserPreferences
 
 class MainViewModel(
     private val pref: UserPreferences
-): ViewModel() {
+) : ViewModel() {
 
     private var _loading = MutableLiveData(false)
     val loading get() = _loading
 
-    fun showLoading(show: Boolean){
+    fun showLoading(show: Boolean) {
         _loading.value = show
     }
 

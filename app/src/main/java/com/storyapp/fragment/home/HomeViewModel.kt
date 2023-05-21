@@ -26,7 +26,7 @@ class HomeViewModel(
     val failure get() = _failure
 
 
-    fun showFailureImage(show: Boolean, desc: String){
+    fun showFailureImage(show: Boolean, desc: String) {
         _failure.value = ErrorDialogModel(
             show,
             desc
@@ -44,14 +44,17 @@ class HomeViewModel(
                 if (responseStory.isSuccessful && responseBody != null) {
                     emit(ResultStatus.Success(responseBody))
                 } else {
-                    emit(ResultStatus.Error(
-                        responseGsonPattern(
-                        gson,
-                        responseStory
-                            .errorBody()
-                            ?.string()
-                            .toString()
-                    ).message))
+                    emit(
+                        ResultStatus.Error(
+                            responseGsonPattern(
+                                gson,
+                                responseStory
+                                    .errorBody()
+                                    ?.string()
+                                    .toString()
+                            ).message
+                        )
+                    )
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

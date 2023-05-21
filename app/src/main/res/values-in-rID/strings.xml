@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Story App</string>
+    <string name="login_page">Masuk</string>
+    <string name="registration_page">Daftar</string>
+    <string name="story_page">Cerita</string>
+    <string name="auth_page">Autentikasi</string>
+    <string name="desc_failed">Gagal karna sesuatu</string>
+    <string name="desc_tab">Rancangan tab untuk laman masuk dan daftar</string>
+    <string name="hint_name">Nama</string>
+    <string name="hint_password">Sandi</string>
+    <string name="hint_email">Surel</string>
+    <string name="error_name">Isi nama anda</string>
+    <string name="error_email">Surel anda salah</string>
+    <string name="error_password">Jumlah karakter pada sandi harus lebih atau sama dengan 8</string>
+    <string name="add_story">Tambah cerita</string>
+    <string name="change_language">Ubah bahasa</string>
+    <string name="logout">Keluar</string>
+    <string name="success_logout">Berhasil keluar</string>
+    <string name="story_name">Nama cerita</string>
+    <string name="story_desc">Penjelasan cerita</string>
+    <string name="reload">Ulang</string>
+    <string name="det_story_page">Detail cerita</string>
+    <string name="desc_add">Penjelasan</string>
+    <string name="add_photo">Tambah foto</string>
+    <string name="file_null">File null</string>
+    <string name="take_photo">Ambil foto</string>
+    <string name="choose_gallery">Pilih dari galeri</string>
+    <string name="select_option">Memilih opsi</string>
+    <string name="cancel">Keluar</string>
+    <string name="choose_picture">Pilih gambar</string>
+    <string name="not_get_permission">tidak mendapatkan izin</string>
+    <string name="please_wait">Silahkan tunggu …</string>
+    <string name="empty_text">Tidak ada data</string>
+    <string name="empty_desc">Tidak ada penjelasan</string>
+</resources>

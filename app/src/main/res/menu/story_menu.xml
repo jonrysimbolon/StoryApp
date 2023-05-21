@@ -4,7 +4,7 @@
     <item
         android:id="@+id/addNews"
         android:icon="@drawable/ic_add"
-        android:title="@string/add_news"
+        android:title="@string/add_story"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/changeLanguage"

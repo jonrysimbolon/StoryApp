@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeLoading() {
-        viewModel.loading.observe(this){ show ->
+        viewModel.loading.observe(this) { show ->
             loadingDialog.show(show)
         }
     }
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             android.R.id.home -> {
                 onBack()
             }
