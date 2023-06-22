@@ -16,7 +16,6 @@
     <string name="add_story">Tambah cerita</string>
     <string name="change_language">Ubah bahasa</string>
     <string name="logout">Keluar</string>
-    <string name="success_logout">Berhasil keluar</string>
     <string name="story_name">Nama cerita</string>
     <string name="story_desc">Penjelasan cerita</string>
     <string name="reload">Ulang</string>
@@ -33,4 +32,11 @@
     <string name="please_wait">Silahkan tunggu …</string>
     <string name="empty_text">Tidak ada data</string>
     <string name="empty_desc">Tidak ada penjelasan</string>
+    <string name="retry">Coba lagi</string>
+    <string name="map_story">Cerita di peta</string>
+    <string name="map_story_page">Peta</string>
+    <string name="desc_location">Anda bersedia mengirim lokasi anda ke server yang dituju</string>
+    <string name="location_null">Lokasi tidak terdeteksi, silahkan tunggu sesaat lagi, dan tekan tombol sekali lagi</string>
+    <string name="must_active_gps">Anda harus mengaktifkan GPS untuk menggunakan fitur ini</string>
+    <string name="location_not_found">Lokasi tidak ditemukan. Coba lagi</string>
 </resources>

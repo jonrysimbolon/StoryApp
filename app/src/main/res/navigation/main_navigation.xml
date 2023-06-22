@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.storyapp.fragment.home.HomeFragment"
+        android:name="com.story.fragment.home.HomeFragment"
         android:label="@string/story_page"
         tools:layout="@layout/fragment_home">
         <action
@@ -29,11 +29,22 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_homeFragment_to_detailStoryFragment"
-            app:destination="@id/detailStoryFragment" />
+            app:destination="@id/detailStoryFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_homeFragment_to_storyMapsFragment"
+            app:destination="@id/storyMapsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/addStoryFragment"
-        android:name="com.storyapp.fragment.add.AddStoryFragment"
+        android:name="com.story.fragment.add.AddStoryFragment"
         android:label="@string/add_story"
         tools:layout="@layout/fragment_add_story">
         <action
@@ -42,7 +53,7 @@
     </fragment>
     <fragment
         android:id="@+id/authenticationFragment"
-        android:name="com.storyapp.fragment.authentication.AuthenticationFragment"
+        android:name="com.story.fragment.authentication.AuthenticationFragment"
         android:label="@string/auth_page"
         tools:layout="@layout/fragment_authentication">
         <action
@@ -58,7 +69,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailStoryFragment"
-        android:name="com.storyapp.fragment.detail.DetailStoryFragment"
+        android:name="com.story.fragment.detail.DetailStoryFragment"
         android:label="@string/det_story_page"
         tools:layout="@layout/fragment_detail_story">
 
@@ -75,4 +86,9 @@
             android:name="descStory"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/storyMapsFragment"
+        android:name="com.story.fragment.map.StoryMapsFragment"
+        android:label="@string/map_story_page"
+        tools:layout="@layout/fragment_story_maps" />
 </navigation>

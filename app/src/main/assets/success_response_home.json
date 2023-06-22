@@ -1,0 +1,96 @@
+{
+  "error": false,
+  "message": "Stories fetched successfully",
+  "listStory": [
+    {
+      "id": "story-qupYvHJtCGMC2BXd",
+      "name": "realme",
+      "description": "No description",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1686716434441_gE0bdpoU.jpg",
+      "createdAt": "2023-06-14T04:20:34.445Z",
+      "lat": 3.6993042,
+      "lon": 98.6858984
+    },
+    {
+      "id": "story-K5Ag5dcBvCJnjUKl",
+      "name": "realme",
+      "description": "No description",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1686716343806_GqS5ayjM.jpg",
+      "createdAt": "2023-06-14T04:19:03.807Z",
+      "lat": 3.6993042,
+      "lon": 98.6858984
+    },
+    {
+      "id": "story-E4AjqCu8Vbo36Ue6",
+      "name": "realme",
+      "description": "No description",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1686716313886_XV2z0ujM.jpg",
+      "createdAt": "2023-06-14T04:18:33.887Z",
+      "lat": 3.6993042,
+      "lon": 98.6858984
+    },
+    {
+      "id": "story-alTpOHWvKDtf2lOB",
+      "name": "realme",
+      "description": "No description",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1686716300071_078IgOnV.jpg",
+      "createdAt": "2023-06-14T04:18:20.072Z",
+      "lat": 3.6993485,
+      "lon": 98.685982
+    },
+    {
+      "id": "story-MSfX77FYUzYkVgJ4",
+      "name": "hai",
+      "description": "afffaa iyahhh",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1686714725287_pudk9_tX.jpg",
+      "createdAt": "2023-06-14T03:52:05.290Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-aIZ1MH2cbjcCIuSK",
+      "name": "anonim",
+      "description": "peace - loc included",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1686714363203_uqEayZSl.jpg",
+      "createdAt": "2023-06-14T03:46:03.222Z",
+      "lat": -6.3632529,
+      "lon": 106.8514256
+    },
+    {
+      "id": "story-fONF2WZ-3x-OGfrS",
+      "name": "realme",
+      "description": "No description",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1686713175254_Arns1fLa.jpg",
+      "createdAt": "2023-06-14T03:26:15.255Z",
+      "lat": 3.6993485,
+      "lon": 98.685982
+    },
+    {
+      "id": "story-_LRrt-8rfD4F-9C2",
+      "name": "realme",
+      "description": "location",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1686711816689_qN8Po0Mn.jpg",
+      "createdAt": "2023-06-14T03:03:36.693Z",
+      "lat": 3.6992796,
+      "lon": 98.6859622
+    },
+    {
+      "id": "story-G3sjoS52hUZjhljP",
+      "name": "realme",
+      "description": "No description",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1686711787653_jM2ZVNlZ.jpg",
+      "createdAt": "2023-06-14T03:03:07.653Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-pPJPPK6ogHpsFX86",
+      "name": "realme",
+      "description": "No description",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1686711651121_cYcOvWJ2.jpg",
+      "createdAt": "2023-06-14T03:00:51.122Z",
+      "lat": 3.6980268,
+      "lon": 98.6860183
+    }
+  ]
+}

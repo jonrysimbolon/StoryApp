@@ -7,6 +7,11 @@
         android:title="@string/add_story"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/mapStory"
+        android:icon="@drawable/ic_map"
+        android:title="@string/map_story"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/changeLanguage"
         android:icon="@drawable/ic_change_language"
         android:title="@string/change_language"

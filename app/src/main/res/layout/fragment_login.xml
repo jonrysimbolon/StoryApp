@@ -36,7 +36,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivLogin" />
 
-        <com.storyapp.customview.EmailBox
+        <com.story.customview.EmailBox
             android:id="@+id/ed_login_email"
             style="@style/OutlineBoxStyle"
             android:layout_width="match_parent"
@@ -60,7 +60,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ed_login_email" />
 
-        <com.storyapp.customview.PasswordBox
+        <com.story.customview.PasswordBox
             android:id="@+id/ed_login_password"
             style="@style/OutlineBoxStyle"
             android:layout_width="0dp"
@@ -72,7 +72,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_login_password"
             tools:ignore="DuplicateSpeakableTextCheck,VisualLintTextFieldSize" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/loginBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

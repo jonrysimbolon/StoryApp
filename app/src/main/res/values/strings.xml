@@ -15,7 +15,6 @@
     <string name="add_story">Add story</string>
     <string name="change_language">Change language</string>
     <string name="logout">Logout</string>
-    <string name="success_logout">Logout successfully</string>
     <string name="story_name">Story name</string>
     <string name="story_desc">Story description</string>
     <string name="reload">Reload</string>
@@ -32,4 +31,11 @@
     <string name="please_wait">Please wait a moment …</string>
     <string name="empty_text">NO DATA</string>
     <string name="empty_desc">No description</string>
+    <string name="retry">Retry</string>
+    <string name="map_story">Story on map</string>
+    <string name="map_story_page">Map</string>
+    <string name="desc_location">You agree to send location data to the server you wish to target</string>
+    <string name="location_null">Location is null, please wait for it and click button again</string>
+    <string name="must_active_gps">You must activate you GPS to use this feature</string>
+    <string name="location_not_found">Location is not found. Try Again</string>
 </resources>

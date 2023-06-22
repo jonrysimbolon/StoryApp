@@ -1,0 +1,9 @@
+{
+  "error": false,
+  "message": "success",
+  "loginResult": {
+    "userId": "user-0dbZnQa3dC_IJ_oR",
+    "name": "realme",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLTBkYlpuUWEzZENfSUpfb1IiLCJpYXQiOjE2ODY3OTgzNjJ9.NEoqXNIUpl9FDgCfV3yI21EUroP12KhpdVRlKWFsGqA"
+  }
+}

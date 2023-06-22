@@ -38,14 +38,25 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/locationCb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="4dp"
+            android:text="@string/desc_location"
+            android:textColor="@color/red_500"
+            android:textStyle="italic"
+            app:layout_constraintTop_toBottomOf="@id/ti_add_photo" />
+
+        <Button
             android:id="@+id/button_add_photo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:layout_marginVertical="8dp"
             android:text="@string/add_photo"
-            app:layout_constraintTop_toBottomOf="@id/ti_add_photo" />
+            app:layout_constraintTop_toBottomOf="@id/locationCb" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>
