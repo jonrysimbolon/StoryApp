@@ -60,7 +60,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ed_register_name" />
 
-        <com.story.customview.EmailBox
+        <com.jonrysimbolonstory.customview.EmailBox
             android:id="@+id/ed_register_email"
             style="@style/OutlineBoxStyle"
             android:layout_width="match_parent"
@@ -84,7 +84,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ed_register_email" />
 
-        <com.story.customview.PasswordBox
+        <com.jonrysimbolonstory.customview.PasswordBox
             android:id="@+id/ed_register_password"
             style="@style/OutlineBoxStyle"
             android:layout_width="0dp"

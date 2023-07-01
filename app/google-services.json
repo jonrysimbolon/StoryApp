@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "882627019571",
+    "project_id": "storyapp-8b96d",
+    "storage_bucket": "storyapp-8b96d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882627019571:android:eeb378ae28e734d0247446",
+        "android_client_info": {
+          "package_name": "com.jonrysimbolonstory"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882627019571-gd6ij59473pv5bk2otadu9p8ku1sdhga.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jonrysimbolonstory",
+            "certificate_hash": "ba9f2e991acb88b9524ef88bbf31487eddc96cb5"
+          }
+        },
+        {
+          "client_id": "882627019571-noh1heifarj1tdjjcnevhvk58bb40p9p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDV0C4T6TiS_t1vYMZ9XnOnn48ouTuDR9c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882627019571-noh1heifarj1tdjjcnevhvk58bb40p9p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
