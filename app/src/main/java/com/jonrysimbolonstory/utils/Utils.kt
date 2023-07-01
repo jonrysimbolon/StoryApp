@@ -6,6 +6,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -28,6 +31,14 @@ const val TEXT_PLAIN_TYPE = "text/plain"
 const val STORY_DATABASE = "story_database"
 const val BEARER = "Bearer"
 
+fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
+    observe(lifecycleOwner, object : Observer<T> {
+        override fun onChanged(value: T) {
+            observer.onChanged(value)
+            removeObserver(this)
+        }
+    })
+}
 
 fun dateFormat(dateStr: String): String {
     val inputFormat = SimpleDateFormat(dateFormatFromServer, Locale.getDefault())

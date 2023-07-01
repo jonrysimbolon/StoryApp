@@ -13,6 +13,7 @@ import com.jonrysimbolonstory.utils.LoadingDialog
 import com.jonrysimbolonstory.utils.ResultStatus
 import com.jonrysimbolonstory.utils.doAnimation
 import com.jonrysimbolonstory.utils.isValidLogin
+import com.jonrysimbolonstory.utils.observeOnce
 import com.jonrysimbolonstory.utils.showSnackBarAppearBriefly
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
@@ -33,20 +34,18 @@ class LoginFragment : Fragment() {
         loadingDialog.init(requireContext())
 
         binding.apply {
-            loginViewModel.isValidLogin.observe(viewLifecycleOwner) { value ->
-                value.getContentIfNotHandled()?.let { result ->
-                    when (result) {
-                        ResultStatus.Loading -> loadingDialog.show()
+            loginViewModel.isValidLogin.observeOnce(viewLifecycleOwner) { result ->
+                when (result) {
+                    ResultStatus.Loading -> loadingDialog.show()
 
-                        is ResultStatus.Error -> {
-                            loadingDialog.show(false)
-                            result.error.showSnackBarAppearBriefly(root)
-                        }
+                    is ResultStatus.Error -> {
+                        loadingDialog.show(false)
+                        result.error.showSnackBarAppearBriefly(root)
+                    }
 
-                        is ResultStatus.Success -> {
-                            loadingDialog.show(false)
-                            whatNext(result.data.loginResult)
-                        }
+                    is ResultStatus.Success -> {
+                        loadingDialog.show(false)
+                        whatNext(result.data.loginResult)
                     }
                 }
             }

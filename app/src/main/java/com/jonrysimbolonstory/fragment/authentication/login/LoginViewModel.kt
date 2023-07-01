@@ -11,7 +11,6 @@ import com.jonrysimbolonstory.model.UserPreferences
 import com.jonrysimbolonstory.remote.ApiService
 import com.jonrysimbolonstory.remote.response.LoginResult
 import com.jonrysimbolonstory.remote.response.ResponseLogin
-import com.jonrysimbolonstory.utils.Event
 import com.jonrysimbolonstory.utils.ResultStatus
 import com.jonrysimbolonstory.utils.responseGsonPattern
 import com.jonrysimbolonstory.utils.wrapEspressoIdlingResource
@@ -23,37 +22,35 @@ class LoginViewModel(
     private val gson: Gson
 ) : ViewModel() {
 
-    private val _isValidLogin: MutableLiveData<Event<ResultStatus<ResponseLogin>>> =
+    private val _isValidLogin: MutableLiveData<ResultStatus<ResponseLogin>> =
         MutableLiveData()
-    val isValidLogin: LiveData<Event<ResultStatus<ResponseLogin>>> get() = _isValidLogin
+    val isValidLogin: LiveData<ResultStatus<ResponseLogin>> get() = _isValidLogin
 
     fun login(userLoginModel: UserLoginModel) {
         wrapEspressoIdlingResource {
             viewModelScope.launch {
-                _isValidLogin.postValue(Event(ResultStatus.Loading))
+                _isValidLogin.postValue(ResultStatus.Loading)
                 try {
                     val loginResponse = apiService.login(userLoginModel)
                     val loginBody = loginResponse.body()
                     if (loginResponse.isSuccessful && loginBody != null) {
-                        _isValidLogin.postValue(Event(ResultStatus.Success(loginBody)))
+                        _isValidLogin.postValue(ResultStatus.Success(loginBody))
                     } else {
                         _isValidLogin.postValue(
-                            Event(
-                                ResultStatus.Error(
-                                    responseGsonPattern(
-                                        gson,
-                                        loginResponse
-                                            .errorBody()
-                                            ?.string()
-                                            .toString()
-                                    ).message
-                                )
+                            ResultStatus.Error(
+                                responseGsonPattern(
+                                    gson,
+                                    loginResponse
+                                        .errorBody()
+                                        ?.string()
+                                        .toString()
+                                ).message
                             )
                         )
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    _isValidLogin.postValue(Event(ResultStatus.Error(e.message.toString())))
+                    _isValidLogin.postValue(ResultStatus.Error(e.message.toString()))
                 }
             }
         }
