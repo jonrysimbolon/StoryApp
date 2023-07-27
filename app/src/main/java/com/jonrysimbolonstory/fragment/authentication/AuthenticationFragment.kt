@@ -25,7 +25,7 @@ class AuthenticationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        (activity as AppCompatActivity).supportActionBar?.hide()
         binding.apply {
             val sectionsPagerAdapter = SectionsPagerAdapter(requireActivity() as AppCompatActivity)
             viewPager.adapter = sectionsPagerAdapter
