@@ -2,17 +2,18 @@ package com.jonrysimbolonstory.main
 
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.jonrysimbolonstory.R
 import com.jonrysimbolonstory.databinding.ActivityMainBinding
 import com.jonrysimbolonstory.model.UserPreferences
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
@@ -23,36 +24,20 @@ class MainActivity : AppCompatActivity() {
 
     private val userPreferences: UserPreferences by inject()
 
-    private val navHostFragment by lazy {
-        supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
+    private val navController by lazy {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
+        navHostFragment.findNavController()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
         observeIsLogin()
-        navHostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
-            setTitle(destination)
+        setupActionBarWithNavController(navController)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             configureActionBar(destination)
-            configureUpButton(destination)
         }
-        backPressed()
-    }
-
-    private fun observeIsLogin() {
-        userPreferences.isLogin().onEach { isLogin ->
-            val navController = navHostFragment.findNavController()
-            val destinationId = navController.currentDestination?.id
-            if (isLogin) {
-                if (destinationId == R.id.authenticationFragment) navController.navigate(R.id.action_authenticationFragment_to_homeFragment)
-            } else {
-                if (destinationId == R.id.homeFragment) navController.navigate(R.id.action_homeFragment_to_authenticationFragment)
-            }
-        }.launchIn(lifecycleScope)
-    }
-
-    private fun setTitle(destination: NavDestination) {
-        title = destination.label
     }
 
     private fun configureActionBar(destination: NavDestination) {
@@ -63,28 +48,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun configureUpButton(destination: NavDestination) {
-        supportActionBar?.setDisplayHomeAsUpEnabled(
-            !(destination.id == R.id.homeFragment || destination.id == R.id.authenticationFragment)
-        )
-    }
-
-    private fun backPressed() {
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                onBack()
-            }
-        })
-    }
-
-    fun onBack() {
-        navHostFragment.findNavController().let {
-            when (it.currentDestination?.id) {
-                R.id.homeFragment -> finish()
-                R.id.authenticationFragment -> finish()
-                else -> it.popBackStack()
+    private fun observeIsLogin() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userPreferences.isLogin().collect { isLogin ->
+                    val destinationId = navController.currentDestination?.id
+                    if (isLogin) {
+                        if (destinationId == R.id.authenticationFragment)
+                            navController.navigate(R.id.action_authenticationFragment_to_homeFragment)
+                    } else {
+                        if (destinationId == R.id.homeFragment)
+                            navController.navigate(R.id.action_homeFragment_to_authenticationFragment)
+                    }
+                }
             }
         }
+    }
+
+    private fun onBack() {
+        navController.popBackStack()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
